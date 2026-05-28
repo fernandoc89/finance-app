@@ -1,0 +1,33 @@
+{
+  "name": "finance-app",
+  "version": "1.0.0",
+  "description": "Sistema de Gestão Financeira Pessoal",
+  "private": true,
+  "scripts": {
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "docker:restart": "docker-compose restart",
+    "docker:rebuild": "docker-compose up -d --build",
+    "docker:logs": "docker-compose logs -f",
+    "docker:logs:api": "docker-compose logs -f backend",
+    "docker:logs:db": "docker-compose logs -f postgres",
+    "docker:clean": "docker-compose down -v && docker system prune -f",
+    "docker:seed": "docker-compose exec backend npm run seed",
+    "docker:psql": "docker-compose exec postgres psql -U postgres -d finance_app",
+    "docker:status": "docker-compose ps",
+    "docker:tools": "docker-compose --profile tools up -d",
+    "docker:cache": "docker-compose --profile cache up -d",
+    "backend:install": "cd backend && npm install",
+    "backend:dev": "cd backend && npm run start:dev",
+    "backend:build": "cd backend && npm run build",
+    "backend:test": "cd backend && npm run test",
+    "mobile:install": "cd mobile && npm install",
+    "mobile:start": "cd mobile && npx expo start",
+    "web:install": "cd web && npm install",
+    "web:dev": "cd web && npm run dev",
+    "web:build": "cd web && npm run build",
+    "install:all": "npm run backend:install && npm run mobile:install && npm run web:install",
+    "dev:docker": "npm run docker:up",
+    "dev:docker:full": "npm run docker:up && npm run docker:tools"
+  }
+}
