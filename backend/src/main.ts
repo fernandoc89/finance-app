@@ -17,9 +17,21 @@ async function bootstrap() {
     }),
   );
 
-  // Configuração CORS
+  // Configuração CORS (produção: defina CORS_ORIGINS no Render, ex. https://seu-app.vercel.app)
+  const configService = app.get(ConfigService);
+  const corsFromEnv = configService
+    .get<string>('CORS_ORIGINS', '')
+    .split(',')
+    .map((origin) => origin.trim())
+    .filter(Boolean);
+  const corsOrigins = [
+    'http://localhost:5173',
+    'http://localhost:19006',
+    ...corsFromEnv,
+  ];
+
   app.enableCors({
-    origin: ['http://localhost:5173', 'http://localhost:19006'],
+    origin: corsOrigins,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
   });
@@ -42,7 +54,6 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
 
-  const configService = app.get(ConfigService);
   const port = configService.get<number>('PORT', 3000);
 
   await app.listen(port);
